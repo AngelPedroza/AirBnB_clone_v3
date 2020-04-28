@@ -80,7 +80,7 @@ class DBStorage:
         """
         Returns the object based on the class name and its ID, or None if not found
         """
-        objects = self.all().values()
+        objects = self.all(cls).values()
         if len(objects) == 0:
             return None
 
@@ -96,13 +96,8 @@ class DBStorage:
         If no name is passed, returns the count of all objects in storage.
         """
         if cls == None:
-            lis = self.all().values()
-        else:
-            lis = []
             objects = self.all().values()
+        else:
+            objects = self.all(cls).values()
 
-            for clase in objects:
-                if type(clase) is cls:
-                    lis.append(clase)
-
-        return len(lis)
+        return len(objects)
