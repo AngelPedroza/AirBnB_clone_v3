@@ -7,7 +7,8 @@ from models.amenity import Amenity
 
 
 @app_views.route('/amenities', methods=['GET'], strict_slashes=False)
-@app_views.route('/amenities/<amenity_id>', methods=['GET'], strict_slashes=False)
+@app_views.route('/amenities/<amenity_id>',
+                 methods=['GET'], strict_slashes=False)
 def show_amenities(amenity_id=None):
     """Show all states or the state that match with the id"""
     if amenity_id is None:
@@ -63,7 +64,8 @@ def create_amenity():
     return jsonify(obj.to_dict()), 201
 
 
-@app_views.route('/amenities/<amenity_id>', methods=['PUT'], strict_slashes=False)
+@app_views.route('/amenities/<amenity_id>',
+                 methods=['PUT'], strict_slashes=False)
 def update_amenity(amenity_id=None):
     """Update a state"""
     if not request.json:
@@ -77,7 +79,7 @@ def update_amenity(amenity_id=None):
     data = request.get_json()
 
     for key, value in data.items():
-        if key is not "id" or key is not "created_at" or key is not "updated_at":
+        if key != "id" or key is not "created_at" or key is not "updated_at":
             setattr(amenity, key, value)
 
     storage.save()
