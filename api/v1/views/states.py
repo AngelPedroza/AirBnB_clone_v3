@@ -33,7 +33,8 @@ def show_states(state_id=None):
                  methods=['DELETE'], strict_slashes=False)
 def delete_states(state_id=None):
     """Delete the element and return a empty dictionary"""
-    if state_id is None:
+    state = storage.get(State, state_id)
+    if state is None:
         abort(404)
     else:
         state = storage.get(State, state_id)
@@ -66,13 +67,13 @@ def create_state():
 @app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
 def update_state(state_id=None):
     """Update a state"""
-    if not request.json:
-        abort(400, description="Not a JSON")
-
     state = storage.get(State, state_id)
 
     if state is None:
         abort(404)
+
+    if not request.json:
+        abort(400, description="Not a JSON")
 
     data = request.get_json()
 
