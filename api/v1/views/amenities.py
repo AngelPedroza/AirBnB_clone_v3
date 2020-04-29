@@ -12,7 +12,7 @@ from models.amenity import Amenity
 def show_amenities(amenity_id=None):
     """Show all states or the state that match with the id"""
     if amenity_id is None:
-        amenities = storage.all(State).values()
+        amenities = storage.all(Amenity).values()
         json_list = []
 
         for amenity in amenities:
