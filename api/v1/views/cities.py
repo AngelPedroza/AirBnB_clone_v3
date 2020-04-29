@@ -46,7 +46,7 @@ def delete_city(city_id=None):
         abort(404)
     else:
         city = storage.get(City, city_id)
-        if is not city None:
+        if city is not None:
             storage.delete(city)
             storage.save()
 
