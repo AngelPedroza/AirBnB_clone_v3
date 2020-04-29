@@ -34,7 +34,8 @@ def show_amenities(amenity_id=None):
                  methods=['DELETE'], strict_slashes=False)
 def delete_amenity(amenity_id=None):
     """Delete the element and return a empty dictionary"""
-    if amenity_id is None:
+    amenity = storage.get(Amenity, amenity_id)
+    if amenity is None:
         abort(404)
     else:
         amenity = storage.get(Amenity, amenity_id)
