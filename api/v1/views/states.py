@@ -5,6 +5,7 @@ from api.v1.views import app_views
 from models import storage
 from models.state import State
 
+
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
 @app_views.route('states/<state_id>', methods=['GET'], strict_slashes=False)
 def show_states(state_id=None):
@@ -12,7 +13,7 @@ def show_states(state_id=None):
     if state_id is None:
         states = storage.all(State).values()
         json_list = []
-        
+
         for state in states:
             json_list.append(state.to_dict())
 
@@ -27,14 +28,16 @@ def show_states(state_id=None):
 
         return jsonify(state.to_dict())
 
-@app_views.route('/states/<state_id>', methods=['DELETE'], strict_slashes=False)
+
+@app_views.route('/states/<state_id>',
+                 methods=['DELETE'], strict_slashes=False)
 def delete_states(state_id=None):
     """Delete the element and return a empty dictionary"""
     if state_id is None:
         abort(404)
     else:
         state = storage.get(State, state_id)
-        if not state is None:
+        if state is not None:
             storage.delete(state)
             storage.save()
 
@@ -42,6 +45,7 @@ def delete_states(state_id=None):
         if state is None:
             dic = {}
             return dic, 200
+
 
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
 def create_state():
@@ -58,6 +62,7 @@ def create_state():
 
     return jsonify(obj.to_dict()), 201
 
+
 @app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
 def update_state(state_id=None):
     """Update a state"""
@@ -72,7 +77,7 @@ def update_state(state_id=None):
     data = request.get_json()
 
     for key, value in data.items():
-        if not key is "id" or key is "created_at" or key is "updated_at":
+        if key is not "id" or key is "created_at" or key is "updated_at":
             setattr(state, key, value)
 
     storage.save()
