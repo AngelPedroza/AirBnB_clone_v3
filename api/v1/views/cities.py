@@ -86,7 +86,7 @@ def update_city(city_id=None):
     data = request.get_json()
 
     for key, value in data.items():
-        if not key is "id" or key is "created_at" or key is "updated_at":
+        if key is not "id" or key is not "created_at" or key is not "updated_at":
             setattr(city, key, value)
 
     storage.save()
