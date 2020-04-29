@@ -19,7 +19,6 @@ def show_city_at_state(state_id=None):
     if state is None:
         abort(404)
 
-    print(state)
     cities = state.cities
     json_cities = []
     for city in cities:
