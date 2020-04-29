@@ -10,10 +10,12 @@ from models.review import Review
 from models.amenity import Amenity
 from models.user import User
 
+
 @app_views.route('/status', methods=['GET'], strict_slashes=False)
 def status():
     """Return the status"""
     return jsonify({"status": "OK"})
+
 
 @app_views.route('/stats', methods=['GET'], strict_slashes=False)
 def count_classses():
