@@ -11,15 +11,10 @@ from models.state import State
                  methods=['GET'], strict_slashes=False)
 def show_city_at_state(state_id=None):
     """Show all states or the state that match with the id"""
-    if state_id is None:
-        abort(404)
-
     state = storage.get(State, state_id)
-
     if state is None:
         abort(404)
 
-    print(state)
     cities = state.cities
     json_cities = []
     for city in cities:
@@ -42,7 +37,8 @@ def show_city(city_id=None):
 @app_views.route('/cities/<city_id>', methods=['DELETE'], strict_slashes=False)
 def delete_city(city_id=None):
     """Delete the element and return a empty dictionary"""
-    if city_id is None:
+    city = storage.get(City, city_id)
+    if city is None:
         abort(404)
     else:
         city = storage.get(City, city_id)
@@ -62,7 +58,7 @@ def create_city(state_id=None):
     """Create a new City"""
     state = storage.get(State, state_id)
 
-    if state_id is None:
+    if state is None:
         abort(404)
 
     if not request.json:
