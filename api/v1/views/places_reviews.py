@@ -43,16 +43,15 @@ def delete_review(review_id=None):
     review = storage.get(Review, review_id)
     if review is None:
         abort(404)
-    else:
-        review = storage.get(Review, review_id)
-        if review is not None:
-            storage.delete(review)
-            storage.save()
 
-        review = storage.get(Review, review_id)
-        if review is None:
-            dic = {}
-            return dic, 200
+    if review is not None:
+        storage.delete(review)
+        storage.save()
+
+    review = storage.get(Review, review_id)
+    if review is None:
+        dic = {}
+        return jsonify(dic), 200
 
 
 @app_views.route('/places/<place_id>/reviews',
@@ -79,8 +78,8 @@ def create_review(place_id=None):
     if user is None:
         abort(404)
 
+    data["place_id"] = place_id
     obj = Review(**data)
-    setattr(obj, 'place_id', place_id)
     obj.save()
 
     return jsonify(obj.to_dict()), 201
@@ -88,7 +87,7 @@ def create_review(place_id=None):
 
 @app_views.route('/reviews/<review_id>', methods=['PUT'], strict_slashes=False)
 def update_review(review_id=None):
-    """Update a place"""
+    """Update a review"""
     review = storage.get(Review, review_id)
 
     if review is None:
