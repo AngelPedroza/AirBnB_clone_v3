@@ -52,7 +52,7 @@ def delete_review(review_id=None):
         review = storage.get(Review, review_id)
         if review is None:
             dic = {}
-            return dic, 200
+            return jsonify(dic), 200
 
 
 @app_views.route('/places/<place_id>/reviews',
@@ -79,8 +79,8 @@ def create_review(place_id=None):
     if user is None:
         abort(404)
 
+    data["place_id"] = place_id
     obj = Review(**data)
-    setattr(obj, 'place_id', place_id)
     obj.save()
 
     return jsonify(obj.to_dict()), 201
