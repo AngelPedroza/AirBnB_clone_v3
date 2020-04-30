@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Return a view of all cities"""
-from flask import jsonify, abort, request
+from flask import make_response, jsonify, abort, request
 from api.v1.views import app_views
 from models import storage
 from models.city import City
@@ -20,7 +20,7 @@ def show_reviews_at_place(place_id=None):
     reviews = place.reviews
     json_reviews = []
     for review in reviews:
-        json_reviews.append(reviews.to_dict())
+        json_reviews.append(review.to_dict())
 
     return jsonify(json_reviews)
 
@@ -51,7 +51,7 @@ def delete_review(review_id=None):
     review = storage.get(Review, review_id)
     if review is None:
         dic = {}
-        return jsonify(dic), 200
+        return make_response(jsonify(dic), 200)
 
 
 @app_views.route('/places/<place_id>/reviews',
@@ -63,13 +63,13 @@ def create_review(place_id=None):
     if place is None:
         abort(404)
 
-    if not request.json:
+    if not request.get_json():
         abort(400, description="Not a JSON")
 
-    if "user_id" not in request.get_json().keys():
+    if "user_id" not in request.get_json():
         abort(400, description="Missing user_id")
 
-    if "text" not in request.get_json().keys():
+    if "text" not in request.get_json():
         abort(400, description="Missing text")
 
     data = request.get_json()
@@ -82,7 +82,7 @@ def create_review(place_id=None):
     obj = Review(**data)
     obj.save()
 
-    return jsonify(obj.to_dict()), 201
+    return make_response(jsonify(obj.to_dict()), 201)
 
 
 @app_views.route('/reviews/<review_id>', methods=['PUT'], strict_slashes=False)
@@ -93,7 +93,7 @@ def update_review(review_id=None):
     if review is None:
         abort(404)
 
-    if not request.json:
+    if not request.get_json():
         abort(400, description="Not a JSON")
 
     data = request.get_json()
@@ -104,4 +104,4 @@ def update_review(review_id=None):
             setattr(review, key, value)
 
     storage.save()
-    return jsonify(review.to_dict()), 200
+    return make_response(jsonify(review.to_dict()), 200)
