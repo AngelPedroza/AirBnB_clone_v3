@@ -43,22 +43,15 @@ def delete_review(review_id=None):
     review = storage.get(Review, review_id)
     if review is None:
         abort(404)
-        
+
     if review is not None:
         storage.delete(review)
         storage.save()
 
-<<<<<<< HEAD
-        review = storage.get(Review, review_id)
-        if review is None:
-            dic = {}
-            return jsonify(dic), 200
-=======
     review = storage.get(Review, review_id)
     if review is None:
         dic = {}
-        return dic, 200
->>>>>>> bca08c89ef807cc0304a9ad3c785492d46de6add
+        return jsonify(dic), 200
 
 
 @app_views.route('/places/<place_id>/reviews',
