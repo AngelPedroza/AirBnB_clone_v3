@@ -9,7 +9,7 @@ from models.user import User
 from models.review import Review
 
 
-@app_views.route('places/<place_id>/reviews',
+@app_views.route('/places/<place_id>/reviews',
                  methods=['GET'], strict_slashes=False)
 def show_reviews_at_place(place_id=None):
     """Show all reviews id"""
@@ -55,7 +55,7 @@ def delete_review(review_id=None):
             return dic, 200
 
 
-@app_views.route('places/<place_id>/reviews',
+@app_views.route('/places/<place_id>/reviews',
                  methods=['POST'], strict_slashes=False)
 def create_review(place_id=None):
     """Create a new place"""
